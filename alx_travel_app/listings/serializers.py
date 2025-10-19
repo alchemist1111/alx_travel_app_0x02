@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Listing, Booking, Review, User
+from .models import Listing, Booking, Review, User, Payment
 
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
@@ -223,4 +223,11 @@ class ReviewSerializer(serializers.ModelSerializer):
             "comment",
             "created_at",
         ]
-        read_only_fields = ["review_id", "created_at"]                                   
+        read_only_fields = ["review_id", "created_at"]   
+
+
+# Serializer for payments
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'                                        
