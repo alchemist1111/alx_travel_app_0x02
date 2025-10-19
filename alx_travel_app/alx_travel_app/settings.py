@@ -142,3 +142,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS configuration
 CORS_ALLOW_ALL_ORIGINS = env.bool('CORS_ALLOWED_ORIGINS')
+
+# Custom user
+AUTH_USER_MODEL = 'User.listings'
