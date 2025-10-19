@@ -152,4 +152,29 @@ class Review(models.Model):
         unique_together = ('property', 'user')  # Ensure a user can only leave one review per property
         
     def __str__(self):
-        return f'Review by {self.user.get_full_name()} for {self.property.name} - Rating: {self.rating}'    
+        return f'Review by {self.user.get_full_name()} for {self.property.name} - Rating: {self.rating}' 
+
+# Payment model
+class Payment(models.Model):
+    PAYMENT_STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    ]
+    
+    payment_id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4, db_index=True)
+    booking = models.OneToOneField(Booking, on_delete=models.CASCADE, related_name='payment')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
+    transaction_id = models.CharField(max_length=255, blank=True, null=True)
+    booking_reference = models.CharField(max_length=255, unique=True)
+    status = models.CharField(max_length=255, choices=PAYMENT_STATUS_CHOICES, default='pending')
+    payment_method = models.CharField(max_length=50, default='chapa')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        
+    def __str__(self):
+        return f"Payment for {self.booking_reference} - Status: {self.status}"    
+               
